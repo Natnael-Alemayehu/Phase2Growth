@@ -36,38 +36,31 @@ headers = {
 }
 
 temp = response.json()['result']['items']
-print(temp)
-# id = temp[0]['id']
-# fullName = temp[0]['fullName']
-# occupation = temp[0]['occupation']
-# company = temp[0]['company']
-# connectionDegree = temp[0]['connectionDegree']
-# leadStatusId = temp[0]['leadStatusId']
-# active = str(temp[0]['active'])
 
-# for i in range(len(temp)):
-#     id = temp[i]['id']
-#     fullName = temp[i]['fullName']
-#     occupation = temp[i]['occupation']
-#     company = temp[i]['company']
-#     connectionDegree = temp[i]['connectionDegree']
-#     leadStatusId = temp[i]['leadStatusId']
-#     active = str(temp[i]['active'])
-#     data = {
-#         "records": [
-#         {
-#           "fields": {
-#               "ID" : id,
-#               "Full_Name": fullName,
-#               "Occupation" : occupation,
-#               "Company" : company,
-#               "Connection_Degree" : connectionDegree,
-#               "Lead_Status_ID" : leadStatusId,
-#               "Active" : active
-#           }
-#         }
-#       ]
-#     }
+id = temp[0]['id']
+email = temp[0]['email']
+linkedinUserId = temp[0]['linkedinUserId']
+fullName = temp[0]['fullName']
+
+
+for i in range(len(temp)):
+    print(temp[i]['id'])
+    id = temp[i]['id']
+    email = temp[i]['email']
+    linkedinUserId = temp[i]['linkedinUserId']
+    fullName = temp[i]['fullName']
+    data = {
+        "records": [
+        {
+          "fields": {
+              "AccountId" : id,
+              "fullName": fullName,
+              "email" : email,
+              "linkedInUserId" : linkedinUserId
+          }
+        }
+      ]
+    }
     
-#     r = requests.post(endpoint, json=data, headers=headers)
-# print("From airtable "+ str(r.status_code))
+    r = requests.post(endpoint, json=data, headers=headers)
+print("From airtable "+ str(r.status_code))
