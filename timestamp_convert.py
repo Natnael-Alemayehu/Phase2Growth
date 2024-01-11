@@ -24,13 +24,13 @@ def convert_datetime_to_timestamp(year, month, day, hour, minute, second):
   return int(timestamp_seconds)
 
 
-# Define a datetime object
-date_time_start = datetime(year=2023, month= 12, day=12, hour=11, minute=42, second=5)
-date_time_end = datetime(year=2021, month=1, day=18, hour=11, minute=42, second=5)
+# # Define a datetime object
+# date_time_start = datetime(year=2023, month= 1, day=1, hour=00, minute=00, second=00)
+# date_time_end = datetime(year=2024, month=1, day=1, hour=00, minute=00, second=00)
 
-# Convert to timestamp
-# timestamp_start = convert_datetime_to_timestamp(date_time_start)
-# timestamp_end = convert_datetime_to_timestamp(date_time_end)
+# # Convert to timestamp
+# timestamp_start = convert_datetime_to_timestamp(year=2023, month= 1, day=1, hour=00, minute=00, second=00)
+# timestamp_end = convert_datetime_to_timestamp(year=2024, month=1, day=1, hour=00, minute=00, second=00)
 
 # print(f"Timestamp start: {timestamp_start}")
 # print(f"Timestamp end: {timestamp_end}")

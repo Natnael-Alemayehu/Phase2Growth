@@ -25,7 +25,7 @@ accountId = accountid_list
 timestamp_from = convert_datetime_to_timestamp(year=2023,month=1,day=1,hour=00,minute=00,second=00)
 
 # timestamp_to = 2023/12/12/ - 00:00:00
-timestamp_to = convert_datetime_to_timestamp(year=2023,month=12,day=12,hour=00,minute=00,second=00)
+timestamp_to = convert_datetime_to_timestamp(year=2024,month=1,day=1,hour=00,minute=00,second=00)
 
 curves=[1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,17]
 # Curve explanation 
