@@ -49,6 +49,14 @@ for i in range(len(accountId)):
             active = temp[j]['active']
             leadStatusId = temp[j]['leadStatusId']
 
+            if leadStatusId == 1:
+                leadstring = "Discovered"
+            elif leadStatusId == 2:
+                leadstring = "Connection pending"
+            elif leadStatusId == 3:
+                leadstring = "Connection accepted"
+            elif leadStatusId == 4: 
+                leadstring = "Connection responded"
             data = {
                 "records": [
                 {
@@ -58,6 +66,7 @@ for i in range(len(accountId)):
                     "Company" : company,
                     # "Active" : active,
                     "leadStatusId" : leadStatusId,
+                    "lead_status_id": leadstring,
                     "AccountId" : accountId[i]
                 }
                 }

@@ -23,14 +23,9 @@ def convert_datetime_to_timestamp(year, month, day, hour, minute, second):
   # Return the timestamp
   return int(timestamp_seconds)
 
+# print(convert_datetime_to_timestamp(2023,10,30,00,00,00))
+# print(convert_datetime_to_timestamp(2023,11,30,00,00,00))
 
-# # Define a datetime object
-# date_time_start = datetime(year=2023, month= 1, day=1, hour=00, minute=00, second=00)
-# date_time_end = datetime(year=2024, month=1, day=1, hour=00, minute=00, second=00)
-
-# # Convert to timestamp
-# timestamp_start = convert_datetime_to_timestamp(year=2023, month= 1, day=1, hour=00, minute=00, second=00)
-# timestamp_end = convert_datetime_to_timestamp(year=2024, month=1, day=1, hour=00, minute=00, second=00)
 
 # print(f"Timestamp start: {timestamp_start}")
 # print(f"Timestamp end: {timestamp_end}")

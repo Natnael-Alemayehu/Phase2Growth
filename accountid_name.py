@@ -49,6 +49,7 @@ for i in range(len(temp)):
     email = temp[i]['email']
     linkedinUserId = temp[i]['linkedinUserId']
     fullName = temp[i]['fullName']
+    teamId = temp[i]['teamId']
     data = {
         "records": [
         {
@@ -56,7 +57,8 @@ for i in range(len(temp)):
               "AccountId" : id,
               "fullName": fullName,
               "email" : email,
-              "linkedInUserId" : linkedinUserId
+              "linkedInUserId" : linkedinUserId,
+              "teamId": teamId
           }
         }
       ]

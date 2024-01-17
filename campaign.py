@@ -1,39 +1,82 @@
 import os
 import requests
+from return_fromtxt import read_all_account_ids
 
 from dotenv import load_dotenv
 load_dotenv()
 
+#Fetching from multilead
 GROWTH_API_KEY = os.environ.get("GROWTH_API_KEY")
 
-headers = {
+headers_multilead = {
     "Authorization": f"{GROWTH_API_KEY}",
     "connection" : "keep-alive",
     "Accept-Encoding" : "gzip, deflate, br"
 }
 
-
-
 OpenAPIUrl = 'https://api.multilead.io/api/open-api/v1'
 userId = 21088
-accountId = 19386
-campaignId = 189707
-response = requests.get(f'{OpenAPIUrl}/users/{userId}/accounts/{accountId}/campaigns/{campaignId}/leads', headers= headers)
-print(response.status_code)
+accountid_list = read_all_account_ids()
+accountId = accountid_list
+for i in range(len(accountId)):
+    account = accountId[i]
+    response = requests.get(f'{OpenAPIUrl}/users/{userId}/accounts/{account}/campaigns', headers= headers_multilead)
 
-res = response.json()['result']['items']
-names = []
-for i in range(len(res)):
-    names.append(res[i]['fullName'])
-# print(res)
-temp = response.json()['result']['items']
-id = temp[0]['id']
-fullName = temp[0]['fullName']
-occupation = temp[0]['occupation']
-company = temp[0]['company']
-connectionDegree = temp[0]['connectionDegree']
-leadStatusId = temp[0]['leadStatusId']
-active = str(temp[0]['active'])
+    print("from miltilead: " + str(response.status_code)+ " accountid: "+str(accountId[i]))
+    
+    #Connecting to airtable
 
-print(id, fullName, occupation, company,connectionDegree, leadStatusId, active)
-print(type(id), type(fullName), type(occupation), type(company), type(connectionDegree), type(leadStatusId), type(active))
+    # Use string literals for environment variable names
+    AIRTABLE_BASE_ID = os.environ.get("AIRTABLE_BASE_ID")
+    AIRTABLE_API_KEY = os.environ.get("AIRTABLE_API_KEY")
+    AIRTABLE_TABLE_NAME = 'campaign'
+
+    endpoint = f'https://api.airtable.com/v0/{AIRTABLE_BASE_ID}/{AIRTABLE_TABLE_NAME}'
+    #Python request headers 
+    headers = {
+        "Authorization": f"Bearer {AIRTABLE_API_KEY}",
+        "Content-Type" : "application/json"
+    }
+    
+    if response.status_code != 200:
+        continue
+    else: 
+        temp = response.json()['result']['campaigns']
+        for j in range(len(temp)):
+            temp2 = temp[j]['campaignStats']
+            CampaignName = temp[j]['name']
+            campaignId = temp2['campaignId']
+            inmailsSent = temp2['inmailsSent']
+            connectionsRequested = temp2['connectionsRequested']
+            messagesSent = temp2['messagesSent']
+            connectionRequestsAccepted = temp2['connectionRequestsAccepted']
+            connectionReplies = temp2['connectionReplies']
+            responseRate = temp2['responseRate']
+            acceptanceRate = temp2['acceptanceRate']
+            totalLeads = temp2['totalLeads']
+            isActive = str(temp2['isActive'])
+            
+            data = {
+                "records": [
+                {
+                "fields": {
+                    "AccountId" : accountId[i],
+                    "CampaignName" : CampaignName,
+                    "campaignId" : campaignId,
+                    "inmailsSent" : inmailsSent, 
+                    "connectionsRequested" : connectionsRequested,
+                    "messagesSent" : messagesSent,
+                    "connectionRequestsAccepted" : connectionRequestsAccepted,
+                    "connectionReplies" : connectionReplies,
+                    "responseRate" : responseRate,
+                    "acceptanceRate" : acceptanceRate,
+                    "totalLeads" : totalLeads,
+                    "isActive" : isActive
+                }
+                }
+            ]
+            }
+            
+            r = requests.post(endpoint, json=data, headers=headers)
+            
+            print("From airtable "+ str(r.status_code))
