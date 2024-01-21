@@ -25,7 +25,7 @@ accountId = accountid_list
 timestamp_from = convert_datetime_to_timestamp(year=2023,month=1,day=1,hour=00,minute=00,second=00)
 
 # timestamp_to = 2023/12/12/ - 00:00:00
-timestamp_to = convert_datetime_to_timestamp(year=2024,month=1,day=1,hour=00,minute=00,second=00)
+timestamp_to = convert_datetime_to_timestamp(year=2023,month=1,day=6,hour=00,minute=00,second=00)
 
 curves=[1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,17]
 # Curve explanation 
@@ -60,7 +60,7 @@ for i in range(len(accountId)):
         if i == 1:
             curve = "profile view"
         elif i == 2:
-            curve = "profile folow"
+            curve = "profile follow"
         elif i == 3:
             curve = "invitation sent"
         elif i == 4:
@@ -75,20 +75,22 @@ for i in range(len(accountId)):
         for j in range (len(temp[str(i)])):
             date = temp[str(i)][j]['date']
             value = temp[str(i)][j]['value']
+        
 
-        data = {
-            "records": [
-            {
-                "fields": {
-                    "id": account,
-                    "date": date,
-                    "value": value,
-                    "curve": curve
+            data = {
+                "records": [
+                {
+                    "fields": {
+                        "id": account,
+                        "date": date,
+                        "value": value,
+                        "curve": curve, 
+                        
+                    }
                 }
+                ]
             }
-            ]
-        }
-        r = requests.post(endpoint, json=data, headers=headers)
-    print(r.status_code)
+            r = requests.post(endpoint, json=data, headers=headers)
+        print(r.status_code)
 
 print("From airtable "+ str(r.status_code))
