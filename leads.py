@@ -1,6 +1,7 @@
 import os
 import requests
 from return_fromtxt import read_all_account_ids
+from timestamp_convert import convert_timestamp_to_datetime
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -14,6 +15,33 @@ headers_multilead = {
     "Accept-Encoding" : "gzip, deflate, br"
 }
 
+def lead_status_id_checker(leadStatusId):
+    if leadStatusId == 1:
+        leadstring = "Discovered"
+    elif leadStatusId == 2:
+        leadstring = "Connection pending"
+    elif leadStatusId == 3:
+        leadstring = "Connection accepted"
+    elif leadStatusId == 4: 
+        leadstring = "Connection responded"
+    return leadstring
+
+def check_active(active):
+    if active == True:
+        return "Active"
+    else:
+        return "inactive"
+    
+def phone_checker(num):
+    if num:
+        return str(num)
+    else:
+        return num
+def email_checker(email):
+    if email:
+        return email
+    else:
+        return email
 OpenAPIUrl = 'https://api.multilead.io/api/open-api/v1'
 userId = 21088
 accountid_list = read_all_account_ids()
@@ -48,15 +76,22 @@ for i in range(len(accountId)):
             company = temp[j]['company']
             active = temp[j]['active']
             leadStatusId = temp[j]['leadStatusId']
-
-            if leadStatusId == 1:
-                leadstring = "Discovered"
-            elif leadStatusId == 2:
-                leadstring = "Connection pending"
-            elif leadStatusId == 3:
-                leadstring = "Connection accepted"
-            elif leadStatusId == 4: 
-                leadstring = "Connection responded"
+            tag = temp[j]["tags"]
+            linkedinUrl = temp[j]["linkedinUrl"]
+            phone = temp[j]["allFieldsData"]["phone"]
+            occupation = temp[j]["occupation"]
+            email = temp[j]["allFieldsData"]["email"]
+            campaignId = temp[j]["campaign"]["id"]
+            stepChangeTimestamp = temp[j]["stepChangeTimestamp"]
+            date_last_change_status = convert_timestamp_to_datetime(int(stepChangeTimestamp/1000))
+            tag_new = ''
+            for i,value in enumerate(tag):
+                print(value)
+                if len(tag) == (i+1):
+                    tag_new += value
+                    break
+                tag_new += value + " , " 
+            
             data = {
                 "records": [
                 {
@@ -64,14 +99,24 @@ for i in range(len(accountId)):
                     "linkedinUserId" : linkedinUserId,
                     "FullName" : FullName,
                     "Company" : company,
-                    # "Active" : active,
+                    "Active" : check_active(active),
                     "leadStatusId" : leadStatusId,
-                    "lead_status_id": leadstring,
-                    "AccountId" : accountId[i]
+                    "lead_status_id": str(lead_status_id_checker(leadStatusId)),
+                    "AccountId" : accountId[i],
+                    "tag" : tag_new,
+                    "linkedinUrl" : linkedinUrl,
+                    "phone" : phone_checker(phone),
+                    "email" : email_checker(email),
+                    "campaignId" : campaignId,
+                    "occupation" : occupation,
+                    "date_last_change_status" : date_last_change_status
+                    
                 }
                 }
             ]
             }
             
             r = requests.post(endpoint, json=data, headers=headers)
-            print("From airtable "+ str(r.status_code))
+            print("From airtable "+ str(r.status_code)+ str(r.text))
+            
+

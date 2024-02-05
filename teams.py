@@ -41,6 +41,7 @@ temp = response.json()['result']['items']
 for i in range(len(temp)):
     amount = response.json()['result']['items'][i]['linkedinAccounts']
     for j in range(len(amount)):
+        AccountId = amount[j]['id'] 
         team_id = amount[j]['team']['initialUserId']
         fullName = amount[j]['fullName']
         
@@ -56,6 +57,7 @@ for i in range(len(temp)):
             "records": [
             {
             "fields": {
+                "AccountId" : AccountId, 
                 "team_id" : team_id,
                 "fullName" : fullName,
                 "sub_global_settings" : sub_global_settings,
