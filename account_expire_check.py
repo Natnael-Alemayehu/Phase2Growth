@@ -21,7 +21,7 @@ def active_accountid():
         account = accountId[i]
         response = requests.get(f'{OpenAPIUrl}/users/{userId}/accounts/{account}/leads', headers= headers_multilead)
 
-        print("from miltilead: " + str(response.status_code)+ " accountid: "+str(accountId[i]))
+        # print("from miltilead: " + str(response.status_code)+ " accountid: "+str(accountId[i]))
 
         if response.status_code == 200:
             active_accountid.append(accountId[i])
@@ -66,7 +66,7 @@ def expired_accountid():
         account = accountId[i]
         response = requests.get(f'{OpenAPIUrl}/users/{userId}/accounts/{account}/leads', headers= headers_multilead)
 
-        print("from miltilead: " + str(response.status_code)+ " accountid: "+str(accountId[i]))
+        # print("from miltilead: " + str(response.status_code)+ " accountid: "+str(accountId[i]))
         
         if response.status_code == 403:
             expired_account.append(accountId[i])
