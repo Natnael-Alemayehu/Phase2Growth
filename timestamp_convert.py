@@ -23,8 +23,8 @@ def convert_datetime_to_timestamp(year, month, day, hour, minute, second):
   # Return the timestamp
   return int(timestamp_seconds)
 
-# print(convert_datetime_to_timestamp(year=2023,month=1,day=2,hour=00,minute=00,second=00))
-# print(convert_datetime_to_timestamp(year=2023,month=12,day=31,hour=23,minute=59,second=59))
+# print(convert_datetime_to_timestamp(year=2024,month=1,day=2,hour=00,minute=00,second=00))
+# print(convert_datetime_to_timestamp(year=2024,month=2,day=4,hour=23,minute=59,second=59))
 
 
 # print(f"Timestamp start: {timestamp_start}")
