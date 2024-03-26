@@ -39,23 +39,58 @@ for i in range(len(accountId)):
         "Authorization": f"Bearer {AIRTABLE_API_KEY}",
         "Content-Type" : "application/json"
     }
-
-    temp = response.json()['result']['campaigns']
-
-    for j in range(len(temp)):
-        id = temp[j]['id']
-        lid = temp[j]['linkedinAccountId']
-
-        data = {
-            "records": [
-            {
-            "fields": {
-                "id" : id,
-                "lid" : lid
+    
+    if response.status_code != 200:
+        continue
+    else: 
+        temp = response.json()['result']['items']
+        for j in range(len(temp)):
+            linkedinUserId = temp[j]['linkedinUserId']
+            FullName = temp[j]['fullName']
+            company = temp[j]['company']
+            active = temp[j]['active']
+            leadStatusId = temp[j]['leadStatusId']
+            tag = temp[j]["tags"]
+            linkedinUrl = temp[j]["linkedinUrl"]
+            phone = temp[j]["allFieldsData"]["phone"]
+            occupation = temp[j]["occupation"]
+            email = temp[j]["allFieldsData"]["email"]
+            campaignId = temp[j]["campaign"]["id"]
+            stepChangeTimestamp = temp[j]["stepChangeTimestamp"]
+            date_last_change_status = convert_timestamp_to_datetime(int(stepChangeTimestamp/1000))
+            tag_new = ''
+            for i,value in enumerate(tag):
+                print(value)
+                if len(tag) == (i+1):
+                    tag_new += value
+                    break
+                tag_new += value + " , " 
+            
+            data = {
+                "records": [
+                {
+                "fields": {
+                    "linkedinUserId" : linkedinUserId,
+                    "FullName" : FullName,
+                    "Company" : company,
+                    "Active" : check_active(active),
+                    "leadStatusId" : leadStatusId,
+                    "lead_status_id": str(lead_status_id_checker(leadStatusId)),
+                    "AccountId" : accountId[i],
+                    "tag" : tag_new,
+                    "linkedinUrl" : linkedinUrl,
+                    "phone" : phone_checker(phone),
+                    "email" : email_checker(email),
+                    "campaignId" : campaignId,
+                    "occupation" : occupation,
+                    "date_last_change_status" : date_last_change_status
+                    
+                }
+                }
+            ]
             }
-            }
-        ]
-        }
-        
-        r = requests.post(endpoint, json=data, headers=headers)
-    print("From airtable "+ str(r.status_code))
+            
+            r = requests.post(endpoint, json=data, headers=headers)
+            print("From airtable "+ str(r.status_code)+ str(r.text))
+            
+
