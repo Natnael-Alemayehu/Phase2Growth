@@ -11,3 +11,5 @@ print("Started accountid name migration.")
 accountid_name()
 print("Finished accountid name migration.")
 
+r = requests.post(endpoint, json=data, headers=headers)
+print(r.status_code)
