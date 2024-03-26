@@ -110,7 +110,6 @@ for i in range(len(accountId)):
                     "campaignId" : campaignId,
                     "occupation" : occupation,
                     "date_last_change_status" : date_last_change_status
-                    
                 }
                 }
             ]
