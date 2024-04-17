@@ -4,7 +4,7 @@ app.debug = True
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return 'Integration and deployment succesful'
 
 @app.route('/airtable')
 def testing_path():
